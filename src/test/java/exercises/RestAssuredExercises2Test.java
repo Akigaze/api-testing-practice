@@ -98,11 +98,16 @@ public class RestAssuredExercises2Test {
 	@Test
 	public void checkCountryForCircuit() {
 		
-		given().
-			spec(requestSpec).
-		when().
-		then();
-	}
+		given().spec(requestSpec)
+                .when().log().uri()
+                .get("/circuits/monza.json")
+                .then().log().body()
+                .assertThat()
+                .statusCode(200)
+                .and()
+                .body("MRData.CircuitTable.Circuits[0].Location.country",equalTo("Italy"));
+
+    }
 	
 	/*******************************************************
 	 * Request the pitstop data for the first four races in
