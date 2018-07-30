@@ -31,13 +31,12 @@ public class RestAssuredExercises1Test {
     @Test
     public void checkResponseCodeForCorrectRequest() {
 
-        given().
-                spec(requestSpec).
-                when().log().uri().
-                get("/2016/drivers.json").
-                then().log().body().
-                assertThat().
-                statusCode(200);
+        given().spec(requestSpec)
+                .when().log().uri()
+                .get("/2016/drivers.json")
+                .then().log().body()
+                .assertThat()
+                .statusCode(200);
     }
 
     /*******************************************************
@@ -48,10 +47,12 @@ public class RestAssuredExercises1Test {
     @Test
     public void checkResponseCodeForIncorrectRequest() {
 
-        given().
-                spec(requestSpec).
-                when().
-                then();
+        given().spec(requestSpec)
+                .when().log().uri()
+                .get("/incorrect.json")
+                .then().log().ifError()
+                .assertThat()
+                .statusCode(404);
     }
 
     /*******************************************************
