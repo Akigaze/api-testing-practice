@@ -41,7 +41,7 @@ public class RestAssuredExercises2Test {
                 Arguments.of("monza","Italy"),
                 Arguments.of("sepang","Malaysia"),
                 Arguments.of("spa","Belgium")
-                );
+        );
     }
 
 	@ParameterizedTest
@@ -66,6 +66,28 @@ public class RestAssuredExercises2Test {
 	 ******************************************************/
 
 	//todo
+    static Stream<Arguments> pitstopStatistics(){
+        return Stream.of(
+                Arguments.of(1,1),
+                Arguments.of(2,3),
+                Arguments.of(3,2),
+                Arguments.of(4,2)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("pitstopStatistics")
+    public void checkPitstopNumberForRaces(Integer race,Integer pitstops){
+        given().spec(requestSpec)
+                .pathParam("raceRound",race)
+                .when().log().uri()
+                .get("/2015/{raceRound}/drivers/max_verstappen/pitstops.json")
+                .then().log().body()
+                .assertThat()
+                .statusCode(200)
+                .and()
+                .body("MRData.RaceTable.Races[0].PitStops.size()",equalTo(pitstops));
+    }
 
 	/*******************************************************
 	 * Request data for a specific circuit (for Monza this 
