@@ -5,6 +5,7 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 
@@ -32,8 +33,11 @@ public class RestAssuredExercises1Test {
 
         given().
                 spec(requestSpec).
-                when().
-                then();
+                when().log().uri().
+                get("/2016/drivers.json").
+                then().log().body().
+                assertThat().
+                statusCode(200);
     }
 
     /*******************************************************
