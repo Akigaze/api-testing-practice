@@ -107,10 +107,12 @@ public class RestAssuredExercises1Test {
     @Test
     public void checkThereWasARaceAtSilverstoneIn2014() {
 
-        given().
-                spec(requestSpec).
-                when().
-                then();
+        given().spec(requestSpec)
+                .when().log().uri()
+                .get("/2014/circuits.json")
+                .then().log().body()
+                .assertThat()
+                .body(containsString("silverstone"));
     }
 
     /***********************************************
