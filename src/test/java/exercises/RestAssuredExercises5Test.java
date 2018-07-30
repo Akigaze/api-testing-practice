@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 public class RestAssuredExercises5Test {
 
@@ -30,12 +31,16 @@ public class RestAssuredExercises5Test {
 	@Test
 	public void checkThirdSpeedRecordWasSetIn1955() {
 		
-		given().
-			spec(requestSpec).
-		when().
-		then();
+		given().spec(requestSpec)
+				.when().log().uri()
+				.get("/xml/speedrecords")
+				.then().log().body()
+				.assertThat()
+				.statusCode(200)
+				.and()
+				.body("speedRecords.car[2].year",equalTo("1955"));
 	}
-	
+
 	/*******************************************************
 	 * Get the list of speed records set by street legal cars
 	 * use /xml/speedrecords
