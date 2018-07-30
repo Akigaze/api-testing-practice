@@ -50,11 +50,15 @@ public class RestAssuredExercises5Test {
 	
 	@Test
 	public void checkFourthSpeedRecordWasSetbyAnAstonMartin() {
-		
-		given().
-			spec(requestSpec).
-		when().
-		then();
+
+		given().spec(requestSpec)
+				.when().log().uri()
+				.get("/xml/speedrecords")
+				.then().log().body()
+				.assertThat()
+				.statusCode(200)
+				.and()
+				.body("speedRecords.car[3].@make",equalTo("Aston Martin"));
 	}
 	
 	/*******************************************************
