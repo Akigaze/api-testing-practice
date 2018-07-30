@@ -119,9 +119,13 @@ public class RestAssuredExercises2Test {
 	@Test
 	public void checkNumberOfPitstopsForMaxVerstappenIn2015() {
 		
-		given().
-			spec(requestSpec).
-		when().
-		then();
+		given().spec(requestSpec)
+                .when().log().uri()
+                .get("/2015/1/drivers/max_verstappen/pitstops.json")
+                .then().log().body()
+                .assertThat()
+                .statusCode(200)
+                .and()
+                .body("MRData.RaceTable.Races[0].PitStops.size()",equalTo(1));
 	}
 }
