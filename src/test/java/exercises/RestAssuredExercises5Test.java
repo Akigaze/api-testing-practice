@@ -100,7 +100,7 @@ public class RestAssuredExercises5Test {
 				.and()
 				.body("speedRecords.car.findAll{it.@country=='Germany'||it.@country=='Italy'}.size()",equalTo(4));
 	}
-	
+
 	/*******************************************************
 	 * Get the list of speed records set by street legal cars
 	 * use /xml/speedrecords
@@ -110,10 +110,15 @@ public class RestAssuredExercises5Test {
 	
 	@Test
 	public void checkTwoRecordsHaveBeenSetByCarsWhoseMakeEndOnBenz() {
-		
-		given().
-			spec(requestSpec).
-		when().
-		then();
+
+		given().spec(requestSpec)
+				.when().log().uri()
+				.get("/xml/speedrecords")
+				.then().log().body()
+				.assertThat()
+				.statusCode(200)
+				.and()
+				.body("speedRecords.car.@make.grep(~/.*Benz/).size()",equalTo(2));
+
 	}
 }
