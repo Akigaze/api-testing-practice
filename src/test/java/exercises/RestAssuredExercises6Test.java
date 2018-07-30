@@ -4,6 +4,7 @@ import dataentities.Car;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ public class RestAssuredExercises6Test {
 
 	/*******************************************************
 	 * Create a new Car object that represents a 2012 Ford Focus
-	 * POST this object to /cars/postcar
+	 * POST this object to /car/postcar
 	 * Verify that the response HTTP status code is equal to 200
 	 ******************************************************/
 
@@ -44,7 +45,7 @@ public class RestAssuredExercises6Test {
 	}
 
 	/*******************************************************
-	 * Perform a GET to /cars/getcar/alfaromeogiulia
+	 * Perform a GET to /car/getcar/alfaromeogiulia
 	 * Store the response in a Car object
 	 * Verify, using that object, that the model year = 2016
 	 * Use the standard Assert.assertEquals(expected,actual)
@@ -54,10 +55,10 @@ public class RestAssuredExercises6Test {
 	@Test
 	public void checkThatRetrievingAnAlfaRomeoGiuliaShowsModelYear2016() {
 
-		given().
-			spec(requestSpec).
-		when();
-
-		// Put your assert here
+		Car car=given().spec(requestSpec)
+				.when().log().uri()
+				.get("/car/getcar/alfaromeogiulia")
+				.as(Car.class);
+		Assertions.assertEquals(2016,car.getYear());
 	}
 }
