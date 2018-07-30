@@ -48,7 +48,7 @@ public class RestAssuredExercises3Test {
         responseSpec=new ResponseSpecBuilder()
                 .expectContentType(ContentType.JSON)
                 .expectStatusCode(200)
-                .expectBody("MRData.CircuitTable.Circuits.circuitName[0]",equalTo("Albert Park Grand Prix Circuit"))
+                .expectBody("MRData.CircuitTable.Circuits[0].circuitName",equalTo("Albert Park Grand Prix Circuit"))
                 .build();
     }
 
@@ -81,10 +81,14 @@ public class RestAssuredExercises3Test {
     @Test
     public void useResponseSpecification() {
 
-        given().
-                spec(requestSpec).
-                when().
-                then();
+        given().spec(requestSpec)
+                .when().log().uri()
+                .get("/2014/1/circuits.json")
+                .then().log().body(true)
+                .assertThat()
+                .spec(responseSpec)
+                .and()
+                .body("MRData.CircuitTable.Circuits[0].Location.locality",equalTo("Melbourne"));
     }
 
     /*******************************************************
