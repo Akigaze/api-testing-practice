@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 
 public class RestAssuredExercises1Test {
@@ -84,10 +86,16 @@ public class RestAssuredExercises1Test {
     @Test
     public void checkTheFirstRaceOf2014WasAtAlbertPark() {
 
-        given().
-                spec(requestSpec).
-                when().
-                then();
+        given().spec(requestSpec)
+                .when().log().uri()
+                .get("/2014/1/circuits.json")
+                .then().log().body()
+                .assertThat()
+                .statusCode(200)
+                .and()
+                .body(containsString("circuitId"))
+                .and()
+                .body("MRData.CircuitTable.Circuits[0].circuitId",equalTo("albert_park"));
     }
 
     /***********************************************
