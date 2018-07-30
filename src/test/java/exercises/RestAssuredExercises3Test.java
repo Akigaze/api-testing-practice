@@ -101,9 +101,14 @@ public class RestAssuredExercises3Test {
     @Test
     public void useExtractedDriverId() {
 
-        given().
-                spec(requestSpec).
-                when().
-                then();
+        given().pathParam("driverId",ninthDriverId)
+                .spec(requestSpec)
+                .when().log().uri()
+                .get("/drivers/{driverId}.json")
+                .then().log().body()
+                .assertThat()
+                .statusCode(200)
+                .and()
+                .body("MRData.DriverTable.Drivers[0].nationality",equalTo("German"));
     }
 }
